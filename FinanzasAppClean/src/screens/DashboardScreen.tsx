@@ -1,12 +1,12 @@
 import React, { useState, useCallback } from 'react';
-import { 
-    StyleSheet, 
-    Text, 
-    View, 
-    FlatList, 
-    TouchableOpacity, 
-    ActivityIndicator, 
-    RefreshControl 
+import {
+    StyleSheet,
+    Text,
+    View,
+    FlatList,
+    TouchableOpacity,
+    ActivityIndicator,
+    RefreshControl
 } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { getTransactions, TransactionResponse } from '../services/transactionService';
@@ -76,7 +76,7 @@ export default function DashboardScreen({ navigation }: Props) {
     };
 
     const formatCurrency = (value: number) => {
-        return `$${value.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        return `S/ ${value.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     };
 
     const renderTransactionItem = ({ item }: { item: TransactionResponse }) => {
@@ -84,7 +84,7 @@ export default function DashboardScreen({ navigation }: Props) {
         const formattedAmount = `${isIncome ? '+' : '-'}${formatCurrency(Math.abs(parseFloat(item.amount.toString())))}`;
         // Mostramos el título si existe; si no, la descripción.
         const displayName = item.title || item.description || 'Sin título';
-        
+
         return (
             <View style={styles.transactionCard}>
                 <View style={styles.transactionLeft}>
@@ -151,7 +151,7 @@ export default function DashboardScreen({ navigation }: Props) {
 
                     {/* Lista de Transacciones */}
                     <Text style={styles.sectionTitle}>Últimos Movimientos</Text>
-                    
+
                     <FlatList
                         data={transactions}
                         keyExtractor={(item) => item.id.toString()}
@@ -177,7 +177,7 @@ export default function DashboardScreen({ navigation }: Props) {
             )}
 
             {/* Botón Flotante */}
-            <TouchableOpacity 
+            <TouchableOpacity
                 style={styles.fab}
                 onPress={() => navigation.navigate('AddTransaction')}
                 activeOpacity={0.8}

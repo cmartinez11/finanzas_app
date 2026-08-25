@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    TextInput,
+    TouchableOpacity,
+    Alert,
+    ImageBackground,
+    Image
+} from 'react-native';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
@@ -24,64 +33,87 @@ export default function LoginScreen() {
             await signIn(token);
             console.log('Login exitoso y token almacenado.');
         } catch (error: any) {
-
             console.log('Error de red o Axios completo:', error.message);
-            console.log('Configuración de la petición:', error.config);
-            if (error.request) {
-                console.log('No hubo respuesta del servidor (Error de red/IP/Puerto):', error.request);
-            }
             Alert.alert('Error', error.message || 'No se pudo conectar al servidor');
         }
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Finanzas App</Text>
+        <ImageBackground
+            source={require('../assets/fondo.jpg')}
+            style={styles.backgroundImage}
+            resizeMode="cover"
+        >
+            <View style={styles.overlay}>
+                <View style={styles.container}>
+                    {/* Logo de la App */}
+                    <Image
+                        source={require('../assets/logo.png')}
+                        style={styles.logo}
+                        resizeMode="contain"
+                    />
 
-            <TextInput
-                style={styles.input}
-                placeholder="Correo electrónico"
-                placeholderTextColor="#aaa"
-                value={email}
-                onChangeText={setEmail}
-                autoCapitalize="none"
-                keyboardType="email-address"
-            />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Correo electrónico"
+                        placeholderTextColor="#aaa"
+                        value={email}
+                        onChangeText={setEmail}
+                        autoCapitalize="none"
+                        keyboardType="email-address"
+                    />
 
-            <TextInput
-                style={styles.input}
-                placeholder="Contraseña"
-                placeholderTextColor="#aaa"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-            />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Contraseña"
+                        placeholderTextColor="#aaa"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry
+                    />
 
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Ingresar</Text>
-            </TouchableOpacity>
-        </View>
+                    <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                        <Text style={styles.buttonText}>Ingresar</Text>
+                    </TouchableOpacity>
+                </View>
+
+                {/* Footer Corporativo */}
+                <View style={styles.footer}>
+                    <Text style={styles.footerText}>FEMS PERU EIRL Todos los derechos reservados</Text>
+                </View>
+            </View>
+        </ImageBackground>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    backgroundImage: {
         flex: 1,
-        backgroundColor: '#121212',
+        width: '100%',
+        height: '100%',
+    },
+    overlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+    },
+    container: {
+        width: '85%',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 20,
     },
-    title: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#ffffff',
-        marginBottom: 30,
+    logo: {
+        width: 220,
+        height: 220,
+        resizeMode: 'contain',
+        marginBottom: 10,
     },
     input: {
         width: '100%',
         height: 50,
-        backgroundColor: '#1e1e1e',
+        backgroundColor: 'rgba(30, 30, 30, 0.85)',
         borderRadius: 8,
         paddingHorizontal: 15,
         color: '#fff',
@@ -102,5 +134,16 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         fontSize: 16,
         fontWeight: 'bold',
+    },
+    footer: {
+        position: 'absolute',
+        bottom: 30,
+        alignItems: 'center',
+    },
+    footerText: {
+        color: '#71717a',
+        fontSize: 12,
+        textAlign: 'center',
+        fontWeight: '500',
     },
 });
